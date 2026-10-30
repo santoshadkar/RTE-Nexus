@@ -15,6 +15,13 @@ import LaceGuide from './components/LaceGuide';
 import InteractiveTools from './components/InteractiveTools';
 import RteCareerHub from './components/RteCareerHub';
 
+// STE Components
+import SteOverviewLanding from './components/SteOverviewLanding';
+import SteOperationalPillars from './components/SteOperationalPillars';
+import SteDayInTheLife from './components/SteDayInTheLife';
+import SteInteractiveTools from './components/SteInteractiveTools';
+import SteCareerHub from './components/SteCareerHub';
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('foundations');
 
@@ -34,6 +41,8 @@ export default function App() {
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        {/* RTE FOUNDATIONS & LEADERSHIP */}
         {activeTab === 'foundations' && (
           <RteOverviewLanding onNavigateTab={setActiveTab} />
         )}
@@ -50,6 +59,32 @@ export default function App() {
           <ArtDynamicsHighPerf />
         )}
 
+        {activeTab === 'lace-guide' && (
+          <LaceGuide />
+        )}
+
+        {/* STE LARGE SOLUTION SUITE */}
+        {activeTab === 'ste-overview' && (
+          <SteOverviewLanding onNavigateTab={setActiveTab} />
+        )}
+
+        {activeTab === 'ste-pillars' && (
+          <SteOperationalPillars onOpenAiSuite={() => setActiveTab('ai-copilot')} />
+        )}
+
+        {activeTab === 'ste-day-in-life' && (
+          <SteDayInTheLife />
+        )}
+
+        {activeTab === 'ste-tools' && (
+          <SteInteractiveTools />
+        )}
+
+        {activeTab === 'ste-career-hub' && (
+          <SteCareerHub />
+        )}
+
+        {/* EXECUTION & CADENCE */}
         {activeTab === 'day-in-life' && (
           <DayInTheLife />
         )}
@@ -58,6 +93,15 @@ export default function App() {
           <OperationalPillars onOpenAiSuite={() => setActiveTab('ai-copilot')} />
         )}
 
+        {activeTab === 'reporting-engine' && (
+          <ReportingEngine />
+        )}
+
+        {activeTab === 'cop-masterclass' && (
+          <CopMasterclass />
+        )}
+
+        {/* WORKSHOPS & TOOLS */}
         {activeTab === 'workshop-studio' && (
           <WorkshopStudio />
         )}
@@ -66,25 +110,15 @@ export default function App() {
           <AlmToolsGuide />
         )}
 
-        {activeTab === 'reporting-engine' && (
-          <ReportingEngine />
+        {activeTab === 'power-tools' && (
+          <InteractiveTools />
         )}
 
+        {/* AI CO-PILOT SUITE (RTE + STE COMBINED) */}
         {activeTab === 'ai-copilot' && (
           <AiCoPilot />
         )}
 
-        {activeTab === 'cop-masterclass' && (
-          <CopMasterclass />
-        )}
-
-        {activeTab === 'lace-guide' && (
-          <LaceGuide />
-        )}
-
-        {activeTab === 'power-tools' && (
-          <InteractiveTools />
-        )}
       </main>
 
       {/* Footer */}

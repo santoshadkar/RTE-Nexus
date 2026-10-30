@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AI_PROMPT_LIBRARY, RTE_AI_SIMULATOR_SCENARIOS } from '../data/rteData';
+import { STE_AI_PROMPT_LIBRARY, STE_AI_SIMULATOR_SCENARIOS } from '../data/steData';
 import { 
   Bot, 
   Sparkles, 
@@ -12,16 +13,19 @@ import {
   AlertTriangle,
   Lightbulb,
   ExternalLink,
-  Tag
+  Tag,
+  Layers,
+  Network
 } from 'lucide-react';
 
 export default function AiCoPilot() {
+  const [roleMode, setRoleMode] = useState('all'); // 'all' | 'rte' | 'ste'
   const [activeSubTab, setActiveSubTab] = useState('workbench'); // 'library' | 'workbench' | 'simulator'
-  const [selectedPrompt, setSelectedPrompt] = useState(AI_PROMPT_LIBRARY[0]);
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState(null);
 
   // Workbench Form Inputs
+  const [workbenchRole, setWorkbenchRole] = useState('RTE');
   const [artName, setArtName] = useState('Titan Value Stream');
   const [targetPi, setTargetPi] = useState('PI-2026.3');
   const [featureName, setFeatureName] = useState('Real-Time Payment Gateway Integration');
@@ -30,17 +34,35 @@ export default function AiCoPilot() {
   const [generatedCustomPrompt, setGeneratedCustomPrompt] = useState('');
 
   // Simulator State
+  const [simRole, setSimRole] = useState('all');
   const [activeScenarioIndex, setActiveScenarioIndex] = useState(0);
   const [selectedChoiceIndex, setSelectedChoiceIndex] = useState(null);
 
-  const currentScenario = RTE_AI_SIMULATOR_SCENARIOS[activeScenarioIndex];
+  // Combine RTE and STE prompt libraries with role tagging
+  const combinedPrompts = [
+    ...AI_PROMPT_LIBRARY.map(p => ({ ...p, role: 'RTE' })),
+    ...STE_AI_PROMPT_LIBRARY.map(p => ({ ...p, role: 'STE', description: p.tags.join(', ') }))
+  ];
 
   // Filter prompt library
-  const filteredPrompts = AI_PROMPT_LIBRARY.filter(p => 
-    p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredPrompts = combinedPrompts.filter(p => {
+    const matchesRole = roleMode === 'all' || p.role.toLowerCase() === roleMode.toLowerCase();
+    const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.tags && p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())));
+    return matchesRole && matchesSearch;
+  });
+
+  const [selectedPrompt, setSelectedPrompt] = useState(combinedPrompts[0]);
+
+  // Combined scenarios
+  const combinedScenarios = [
+    ...RTE_AI_SIMULATOR_SCENARIOS.map(s => ({ ...s, role: 'RTE' })),
+    ...STE_AI_SIMULATOR_SCENARIOS.map(s => ({ ...s, role: 'STE' }))
+  ];
+
+  const filteredScenarios = combinedScenarios.filter(s => simRole === 'all' || s.role.toLowerCase() === simRole.toLowerCase());
+  const currentScenario = filteredScenarios[activeScenarioIndex] || filteredScenarios[0];
 
   const handleCopyPrompt = (text, id) => {
     navigator.clipboard.writeText(text);
@@ -48,20 +70,38 @@ export default function AiCoPilot() {
     setTimeout(() => setCopiedId(null), 2500);
   };
 
-  const handleBuildCustomPrompt = () => {
-    const prompt = `Act as an expert SAFe 6.0 Release Train Engineer (RTE) for ART '${artName}' planning for '${targetPi}'.
+  const handleGenerateCustomPrompt = () => {
+    const prompt = workbenchRole === 'STE' 
+      ? `Act as an Enterprise SAFe Solution Train Engineer (STE) facilitating Large Solution synchronization.
 
-CONTEXT & ART DATA:
-- Feature Under Refinement: ${featureName}
-- Capacity vs Planned Load: ${capacityLoad}
-- Identified Risks & Dependencies:
+Solution Train Parameters:
+- Solution Train Name: ${artName}
+- Target Program Increment: ${targetPi}
+- Core Solution Capability: ${featureName}
+- High-Risk Multi-ART Dependencies & Blockers:
 ${rawRisks}
+- Multi-Train Capacity Telemetry: ${capacityLoad}
 
-INSTRUCTIONS & EXECUTABLE DELIVERABLES:
-1. Conduct a ROAMing Analysis (Resolved, Owned, Accepted, Mitigated) for all identified risks.
-2. Draft a 1-page Executive Brief for Business Owners highlighting capacity adjustments required.
-3. Formulate 3 Gherkin acceptance criteria for ${featureName}.
-4. Provide a 3-step action plan for the next Scrum of Scrums (SoS) meeting.`;
+Generate:
+1. Executive Pre/Post-PI Alignment Strategy balancing all participating ARTs.
+2. Cross-Train Dependency SLA contract draft with explicit iteration milestones.
+3. Multi-Train ROAMing Strategy for Business Owners and Solution Architects.
+4. Risk mitigation script to resolve cross-train environment/supplier deadlocks.`
+      : `Act as an expert SAFe 6.0 Release Train Engineer (RTE) and Agile Coach.
+
+ART Parameters:
+- Agile Release Train Name: ${artName}
+- Target Program Increment: ${targetPi}
+- Key Strategic Feature: ${featureName}
+- Identified Team Risks & Blockers:
+${rawRisks}
+- Capacity vs Load Status: ${capacityLoad}
+
+Generate:
+1. Executive Briefing Summary for PI Day 1 Management Review.
+2. Structured ROAM Risk Categorization (Resolved, Owned, Accepted, Mitigated) with recommended owners.
+3. Scope-Trimming Recommendations converting low-WSJF items to Uncommitted Objectives.
+4. Facilitation coaching tips for Scrum of Scrums (SoS) to unblock the critical dependencies.`;
 
     setGeneratedCustomPrompt(prompt);
   };
@@ -69,23 +109,24 @@ INSTRUCTIONS & EXECUTABLE DELIVERABLES:
   return (
     <div className="space-y-10 animate-fadeIn">
       
-      {/* Header Banner */}
-      <div className="glass-panel p-8 rounded-3xl border border-cyan-500/30 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">
+      {/* HEADER BANNER */}
+      <div className="glass-panel p-8 rounded-3xl border border-sky-500/30 bg-gradient-to-r from-navy-950 via-navy-900 to-indigo-950 space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-2">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Next-Gen RTE AI Co-Pilot Suite</span>
+              <span>RTE & STE AI Intelligence Suite</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-              AI Tools & Prompt Engineering for <span className="text-gradient">RTE Leverage</span>
+            <h1 className="text-3xl font-heading font-extrabold text-white">
+              AI Prompts, Workbench & <span className="text-gradient">Leadership Simulator</span>
             </h1>
-            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-              Supercharge your Agile Release Train with AI. Build customized super-prompts, access battle-tested prompt libraries, and simulate complex RTE emergency scenarios.
+            <p className="text-slate-300 text-xs sm:text-sm max-w-2xl mt-1">
+              Field-tested GenAI prompt engineering, dynamic prompt generator, and interactive situational simulators for both Release Train Engineers (RTEs) and Solution Train Engineers (STEs).
             </p>
           </div>
 
-          <div className="flex items-center space-x-2 bg-slate-900/80 p-2 rounded-2xl border border-slate-800 shrink-0">
+          {/* Sub-Tab Navigation */}
+          <div className="flex items-center space-x-2 bg-navy-950 p-1.5 rounded-2xl border border-slate-800 shrink-0">
             <button
               onClick={() => setActiveSubTab('workbench')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -104,7 +145,7 @@ INSTRUCTIONS & EXECUTABLE DELIVERABLES:
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Prompt Library
+              Prompt Library ({combinedPrompts.length})
             </button>
             <button
               onClick={() => setActiveSubTab('simulator')}
@@ -114,7 +155,7 @@ INSTRUCTIONS & EXECUTABLE DELIVERABLES:
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              AI Simulator
+              Leadership Simulator
             </button>
           </div>
         </div>
@@ -126,311 +167,336 @@ INSTRUCTIONS & EXECUTABLE DELIVERABLES:
           
           {/* Form Controls */}
           <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
-            <div className="flex items-center space-x-3 border-b border-slate-800 pb-4">
-              <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
-                <Sliders className="w-5 h-5" />
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+                  <Sliders className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-heading font-bold text-white">Interactive Super-Prompt Builder</h2>
+                  <p className="text-xs text-slate-400">Tailored for both Single ART (RTE) and Multi-ART Large Solution (STE).</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg font-heading font-bold text-white">Interactive RTE Super-Prompt Builder</h2>
-                <p className="text-xs text-slate-400">Fill in your ART parameters to generate a custom prompt for ChatGPT / Claude.</p>
+
+              {/* Role Switcher */}
+              <div className="flex items-center space-x-1 bg-navy-950 p-1 rounded-xl border border-slate-800">
+                <button
+                  onClick={() => setWorkbenchRole('RTE')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
+                    workbenchRole === 'RTE' ? 'bg-sapphire-600 text-white' : 'text-slate-400'
+                  }`}
+                >
+                  RTE Mode
+                </button>
+                <button
+                  onClick={() => setWorkbenchRole('STE')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
+                    workbenchRole === 'STE' ? 'bg-sky-600 text-white' : 'text-slate-400'
+                  }`}
+                >
+                  STE Mode
+                </button>
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1">ART Name</label>
-                  <input 
-                    type="text" 
+                  <label className="text-xs font-semibold text-slate-300 block mb-1">
+                    {workbenchRole === 'STE' ? 'Solution Train Name' : 'ART Name'}
+                  </label>
+                  <input
+                    type="text"
                     value={artName}
                     onChange={(e) => setArtName(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-400 focus:outline-none"
+                    className="w-full bg-navy-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-500 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1">Target PI</label>
-                  <input 
-                    type="text" 
+                  <label className="text-xs font-semibold text-slate-300 block mb-1">Target PI</label>
+                  <input
+                    type="text"
                     value={targetPi}
                     onChange={(e) => setTargetPi(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-400 focus:outline-none"
+                    className="w-full bg-navy-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-500 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Feature Name Under Refinement</label>
-                <input 
-                  type="text" 
+                <label className="text-xs font-semibold text-slate-300 block mb-1">
+                  {workbenchRole === 'STE' ? 'High-Impact Solution Capability' : 'Key Strategic Feature'}
+                </label>
+                <input
+                  type="text"
                   value={featureName}
                   onChange={(e) => setFeatureName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-400 focus:outline-none"
+                  className="w-full bg-navy-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Capacity vs Load Summary</label>
-                <input 
-                  type="text" 
-                  value={capacityLoad}
-                  onChange={(e) => setCapacityLoad(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-400 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Identified Team Risks & Blockers</label>
-                <textarea 
-                  rows={4}
+                <label className="text-xs font-semibold text-slate-300 block mb-1">
+                  {workbenchRole === 'STE' ? 'Cross-ART Dependencies & Supplier Risks' : 'Identified Team Risks & Blockers'}
+                </label>
+                <textarea
+                  rows={3}
                   value={rawRisks}
                   onChange={(e) => setRawRisks(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-400 focus:outline-none font-mono"
+                  className="w-full bg-navy-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-500 focus:outline-none resize-none font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Capacity vs Load</label>
+                <input
+                  type="text"
+                  value={capacityLoad}
+                  onChange={(e) => setCapacityLoad(e.target.value)}
+                  className="w-full bg-navy-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-cyan-500 focus:outline-none"
                 />
               </div>
 
               <button
-                onClick={handleBuildCustomPrompt}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center space-x-2 shadow-glow-cyan transition-all"
+                onClick={handleGenerateCustomPrompt}
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center space-x-2 shadow-lg transition-all"
               >
                 <Wand2 className="w-4 h-4" />
-                <span>Generate Customized AI Super-Prompt</span>
+                <span>Synthesize {workbenchRole} Executive Prompt</span>
               </button>
             </div>
           </div>
 
-          {/* Generated Prompt Output Box */}
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-4 bg-slate-950/80">
+          {/* Prompt Output */}
+          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-4 bg-navy-950/80">
             <div>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-                <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Generated Executable Prompt</span>
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Generated System Prompt</span>
                 {generatedCustomPrompt && (
                   <button
-                    onClick={() => handleCopyPrompt(generatedCustomPrompt, 'custom-wb')}
-                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold"
+                    onClick={() => handleCopyPrompt(generatedCustomPrompt, 'workbench')}
+                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold"
                   >
-                    {copiedId === 'custom-wb' ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-300" />
-                        <span>Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Copy Super-Prompt</span>
-                      </>
-                    )}
+                    {copiedId === 'workbench' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedId === 'workbench' ? 'Copied!' : 'Copy Prompt'}</span>
                   </button>
                 )}
               </div>
 
               {generatedCustomPrompt ? (
-                <pre className="text-xs font-mono text-slate-200 whitespace-pre-wrap leading-relaxed bg-slate-900 p-4 rounded-2xl border border-slate-800 max-h-[380px] overflow-y-auto">
+                <pre className="text-xs font-mono text-slate-200 whitespace-pre-wrap leading-relaxed bg-navy-900 p-4 rounded-xl border border-slate-800 max-h-[380px] overflow-y-auto">
                   {generatedCustomPrompt}
                 </pre>
               ) : (
                 <div className="h-64 flex flex-col items-center justify-center text-center space-y-3 text-slate-500">
-                  <Wand2 className="w-10 h-10 text-slate-700 animate-bounce" />
-                  <p className="text-xs">Click <strong>"Generate Customized AI Super-Prompt"</strong> to synthesize your prompt.</p>
+                  <Bot className="w-12 h-12 text-slate-700" />
+                  <p className="text-xs">Adjust your parameters and click <strong>"Synthesize Prompt"</strong>.</p>
                 </div>
               )}
             </div>
-
-            {/* Quick AI LLM Direct Launch Links */}
-            {generatedCustomPrompt && (
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
-                <span className="text-slate-400">Copy & paste into your preferred LLM:</span>
-                <div className="flex items-center space-x-2">
-                  <a href="https://chatgpt.com" target="_blank" rel="noreferrer" className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 flex items-center space-x-1">
-                    <span>ChatGPT</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                  <a href="https://claude.ai" target="_blank" rel="noreferrer" className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-indigo-400 border border-slate-800 flex items-center space-x-1">
-                    <span>Claude</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
-            )}
           </div>
-
         </div>
       )}
 
       {/* SUB TAB 2: PROMPT LIBRARY */}
       {activeSubTab === 'library' && (
         <div className="space-y-6">
-          
-          {/* Search & Filter Bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="relative w-full sm:w-96">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            
+            {/* Role Filter Tabs */}
+            <div className="flex items-center space-x-1.5 bg-navy-950 p-1.5 rounded-2xl border border-slate-800">
+              <button
+                onClick={() => setRoleMode('all')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold ${roleMode === 'all' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+              >
+                All Prompts ({combinedPrompts.length})
+              </button>
+              <button
+                onClick={() => setRoleMode('rte')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold ${roleMode === 'rte' ? 'bg-sapphire-600 text-white' : 'text-slate-400'}`}
+              >
+                RTE Prompts ({AI_PROMPT_LIBRARY.length})
+              </button>
+              <button
+                onClick={() => setRoleMode('ste')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold ${roleMode === 'ste' ? 'bg-sky-600 text-white' : 'text-slate-400'}`}
+              >
+                STE Prompts ({STE_AI_PROMPT_LIBRARY.length})
+              </button>
+            </div>
+
+            {/* Search Box */}
+            <div className="relative w-full sm:w-72">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               <input
                 type="text"
-                placeholder="Search prompts by category, title, or tag..."
+                placeholder="Search prompts or tags..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:border-cyan-400 focus:outline-none"
+                className="w-full bg-navy-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500"
               />
             </div>
-            <span className="text-xs text-slate-400 font-medium">
-              Showing <strong>{filteredPrompts.length}</strong> prompt templates
-            </span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            {/* Left Prompt List */}
-            <div className="space-y-3">
-              {filteredPrompts.map((p) => (
-                <div
-                  key={p.id}
-                  onClick={() => setSelectedPrompt(p)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
-                    selectedPrompt.id === p.id
-                      ? 'bg-indigo-950/60 border-indigo-500 shadow-md'
-                      : 'bg-slate-900/60 border-slate-800/80 hover:border-slate-700'
-                  }`}
-                >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {filteredPrompts.map((p) => (
+              <div key={p.id} className="glass-panel p-6 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-4">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-cyan-300">
-                      {p.category}
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      p.role === 'STE' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' : 'bg-sapphire-500/20 text-sapphire-300 border-sapphire-500/30'
+                    }`}>
+                      {p.role} Spec
                     </span>
+                    <span className="text-[10px] text-slate-400 font-semibold">{p.category}</span>
                   </div>
-                  <h3 className="font-heading font-bold text-sm text-white">{p.title}</h3>
-                  <p className="text-xs text-slate-400 line-clamp-2">{p.description}</p>
-                </div>
-              ))}
-            </div>
 
-            {/* Right Prompt Viewer */}
-            <div className="lg:col-span-2 glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6 bg-slate-950/90">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-                <div>
-                  <span className="text-xs font-bold text-cyan-400">{selectedPrompt.category}</span>
-                  <h2 className="text-xl font-heading font-bold text-white">{selectedPrompt.title}</h2>
+                  <h3 className="text-base font-bold text-white">{p.title}</h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">{p.description}</p>
+
+                  <pre className="p-3 rounded-xl bg-navy-950 border border-slate-800 text-[11px] font-mono text-slate-300 max-h-36 overflow-y-auto whitespace-pre-wrap">
+                    {p.promptText}
+                  </pre>
                 </div>
 
-                <button
-                  onClick={() => handleCopyPrompt(selectedPrompt.promptText, selectedPrompt.id)}
-                  className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 shrink-0"
-                >
-                  {copiedId === selectedPrompt.id ? (
-                    <>
-                      <Check className="w-4 h-4 text-emerald-300" />
-                      <span>Copied to Clipboard!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      <span>Copy Template</span>
-                    </>
-                  )}
-                </button>
-              </div>
+                <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                  <div className="flex flex-wrap gap-1">
+                    {p.tags.slice(0, 3).map((t, idx) => (
+                      <span key={idx} className="text-[9px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed">{selectedPrompt.description}</p>
-
-              {/* Tags */}
-              <div className="flex items-center space-x-2">
-                <Tag className="w-3.5 h-3.5 text-slate-500" />
-                <div className="flex flex-wrap gap-2">
-                  {selectedPrompt.tags.map((t, idx) => (
-                    <span key={idx} className="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-800">
-                      #{t}
-                    </span>
-                  ))}
+                  <button
+                    onClick={() => handleCopyPrompt(p.promptText, p.id)}
+                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-navy-950 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-semibold"
+                  >
+                    {copiedId === p.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedId === p.id ? 'Copied' : 'Copy'}</span>
+                  </button>
                 </div>
               </div>
-
-              {/* Prompt Text Box */}
-              <div className="relative">
-                <pre className="text-xs font-mono text-slate-200 bg-slate-900/90 p-5 rounded-2xl border border-slate-800 whitespace-pre-wrap leading-relaxed max-h-[350px] overflow-y-auto">
-                  {selectedPrompt.promptText}
-                </pre>
-              </div>
-            </div>
-
+            ))}
           </div>
-
         </div>
       )}
 
-      {/* SUB TAB 3: AI SIMULATOR */}
+      {/* SUB TAB 3: LEADERSHIP SIMULATOR */}
       {activeSubTab === 'simulator' && (
-        <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-            <div>
-              <span className="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center space-x-1">
-                <AlertTriangle className="w-4 h-4 text-rose-400" />
-                <span>RTE Crisis Simulator</span>
-              </span>
-              <h2 className="text-xl font-heading font-bold text-white mt-1">{currentScenario.title}</h2>
-            </div>
-            
-            {/* Scenario Chooser */}
-            <div className="flex space-x-2">
-              {RTE_AI_SIMULATOR_SCENARIOS.map((sc, idx) => (
+        <div className="space-y-6">
+          <div className="flex items-center space-x-2 border-b border-slate-800 pb-4">
+            <span className="text-xs font-bold text-slate-400">Filter Scenarios:</span>
+            {['all', 'rte', 'ste'].map(role => (
+              <button
+                key={role}
+                onClick={() => {
+                  setSimRole(role);
+                  setActiveScenarioIndex(0);
+                  setSelectedChoiceIndex(null);
+                }}
+                className={`px-3 py-1 rounded-xl text-xs font-bold uppercase ${
+                  simRole === role ? 'bg-cyan-600 text-white' : 'bg-navy-950 text-slate-400 border border-slate-800'
+                }`}
+              >
+                {role}
+              </button>
+            ))}
+          </div>
+
+          {currentScenario && (
+            <div className="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-800 space-y-6 bg-navy-900/90">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${
+                  currentScenario.role === 'STE' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' : 'bg-sapphire-500/20 text-sapphire-300 border-sapphire-500/30'
+                }`}>
+                  {currentScenario.role} Challenge
+                </span>
+                <span className="text-xs text-slate-400">Scenario {activeScenarioIndex + 1} of {filteredScenarios.length}</span>
+              </div>
+
+              <div className="space-y-2">
+                <h2 className="text-xl font-heading font-bold text-white">{currentScenario.title}</h2>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed bg-navy-950 p-4 rounded-2xl border border-slate-800">
+                  {currentScenario.context}
+                </p>
+              </div>
+
+              {/* Choices */}
+              <div className="space-y-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">How do you respond?</h3>
+
+                {currentScenario.choices ? (
+                  currentScenario.choices.map((c, idx) => (
+                    <div
+                      key={c.id}
+                      onClick={() => setSelectedChoiceIndex(idx)}
+                      className={`p-4 rounded-2xl border cursor-pointer transition-all ${
+                        selectedChoiceIndex === idx
+                          ? 'bg-cyan-950/40 border-cyan-500 text-white'
+                          : 'bg-navy-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                      }`}
+                    >
+                      <p className="text-xs font-medium">{c.text}</p>
+                      {selectedChoiceIndex === idx && (
+                        <div className="mt-3 pt-3 border-t border-slate-800 space-y-1">
+                          <span className="text-[10px] font-bold text-cyan-300 uppercase block">Expert Leadership Verdict:</span>
+                          <p className="text-xs text-slate-200">{c.verdict}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  currentScenario.options.map((opt, idx) => (
+                    <div
+                      key={idx}
+                      onClick={() => setSelectedChoiceIndex(idx)}
+                      className={`p-4 rounded-2xl border cursor-pointer transition-all ${
+                        selectedChoiceIndex === idx
+                          ? 'bg-cyan-950/40 border-cyan-500 text-white'
+                          : 'bg-navy-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                      }`}
+                    >
+                      <p className="text-xs font-medium">{opt.choice}</p>
+                      {selectedChoiceIndex === idx && (
+                        <div className="mt-3 pt-3 border-t border-slate-800 space-y-1">
+                          <span className={`text-[10px] font-bold uppercase block ${opt.recommended ? 'text-emerald-400' : 'text-amber-400'}`}>
+                            {opt.recommended ? 'Recommended Path' : 'Feedback'}
+                          </span>
+                          <p className="text-xs text-slate-200">{opt.feedback}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Pagination */}
+              <div className="flex items-center justify-between pt-4 border-t border-slate-800">
                 <button
-                  key={sc.id}
+                  disabled={activeScenarioIndex === 0}
                   onClick={() => {
-                    setActiveScenarioIndex(idx);
+                    setActiveScenarioIndex(prev => prev - 1);
                     setSelectedChoiceIndex(null);
                   }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold border ${
-                    activeScenarioIndex === idx
-                      ? 'bg-indigo-600 text-white border-indigo-500'
-                      : 'bg-slate-900 text-slate-400 border-slate-800'
-                  }`}
+                  className="px-4 py-2 rounded-xl bg-navy-950 border border-slate-800 text-xs font-bold text-slate-300 disabled:opacity-40"
                 >
-                  Scenario {idx + 1}
+                  Previous Scenario
                 </button>
-              ))}
-            </div>
-          </div>
 
-          <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-200 leading-relaxed">
-            <strong>Situation Context:</strong> {currentScenario.context}
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white">How do you, as the RTE, handle this situation?</h3>
-            <div className="space-y-3">
-              {currentScenario.options.map((opt, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setSelectedChoiceIndex(idx)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
-                    selectedChoiceIndex === idx
-                      ? opt.recommended
-                        ? 'bg-emerald-950/60 border-emerald-500'
-                        : 'bg-rose-950/60 border-rose-500'
-                      : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
-                  }`}
+                <button
+                  disabled={activeScenarioIndex >= filteredScenarios.length - 1}
+                  onClick={() => {
+                    setActiveScenarioIndex(prev => prev + 1);
+                    setSelectedChoiceIndex(null);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold disabled:opacity-40"
                 >
-                  <p className="text-xs font-semibold text-white">{opt.choice}</p>
-
-                  {selectedChoiceIndex === idx && (
-                    <div className={`p-3 rounded-xl text-xs mt-2 ${
-                      opt.recommended ? 'bg-emerald-900/40 text-emerald-200' : 'bg-rose-900/40 text-rose-200'
-                    }`}>
-                      {opt.feedback}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {selectedChoiceIndex !== null && (
-            <div className="p-5 rounded-2xl bg-indigo-950/50 border border-indigo-500/30 space-y-2">
-              <div className="flex items-center space-x-2 text-xs font-bold text-cyan-300">
-                <Lightbulb className="w-4 h-4 text-cyan-400" />
-                <span>AI Co-Pilot Strategic Advice:</span>
+                  Next Scenario
+                </button>
               </div>
-              <p className="text-xs text-slate-200 leading-relaxed italic">{currentScenario.aiCoPilotAdvice}</p>
             </div>
           )}
-
         </div>
       )}
 
