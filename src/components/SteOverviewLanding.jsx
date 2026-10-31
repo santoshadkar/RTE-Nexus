@@ -278,9 +278,9 @@ export default function SteOverviewLanding({ onNavigateTab }) {
           <div>
             <h2 className="text-xl font-heading font-bold text-white flex items-center space-x-2">
               <Users className="w-6 h-6 text-sky-400" />
-              <span>Full Leadership Comparison: SM vs RTE vs STE</span>
+              <span>Full Leadership Comparison: SM vs RTE vs STE (12 Operational Dimensions)</span>
             </h2>
-            <p className="text-xs text-slate-400">Clear boundary demarcations across Team, ART, and Large Solution scales.</p>
+            <p className="text-xs text-slate-400">Clear boundary demarcations, handoffs, metrics, and authority levels across Team, ART, and Large Solution scales.</p>
           </div>
           <span className="text-xs font-bold text-sky-300 bg-sky-500/10 px-3 py-1.5 rounded-full border border-sky-500/30 w-fit">
             SAFe 6.0 Large Solution Spec
@@ -291,22 +291,22 @@ export default function SteOverviewLanding({ onNavigateTab }) {
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="border-b border-slate-800 bg-navy-950 text-slate-300 uppercase tracking-wider">
-                <th className="p-4 rounded-tl-xl font-bold">Dimension</th>
-                <th className="p-4 font-bold text-slate-300">Scrum Master (SM)</th>
-                <th className="p-4 font-bold text-sapphire-300">Release Train Engineer (RTE)</th>
-                <th className="p-4 rounded-tr-xl font-bold text-sky-300 bg-sky-500/10">Solution Train Engineer (STE)</th>
+                <th className="p-4 rounded-tl-xl font-bold w-1/5">Operational Dimension</th>
+                <th className="p-4 font-bold text-slate-300 w-1/4">Scrum Master (SM)</th>
+                <th className="p-4 font-bold text-sapphire-300 w-1/4">Release Train Engineer (RTE)</th>
+                <th className="p-4 rounded-tr-xl font-bold text-sky-300 bg-sky-500/10 w-1/3">Solution Train Engineer (STE)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-slate-300">
               {STE_ROLES_DATA.roleComparison.map((row, idx) => (
                 <tr key={idx} className="hover:bg-navy-900/60 transition-colors">
-                  <td className="p-4 font-bold text-white flex items-center space-x-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
-                    <span>{row.aspect}</span>
+                  <td className="p-4 font-bold text-white flex items-start space-x-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0 mt-1.5"></span>
+                    <span className="leading-snug">{row.aspect}</span>
                   </td>
-                  <td className="p-4 text-slate-300">{row.sm}</td>
-                  <td className="p-4 text-sapphire-200">{row.rte}</td>
-                  <td className="p-4 text-sky-200 font-semibold bg-sky-500/5 border-x border-sky-500/10">{row.ste}</td>
+                  <td className="p-4 text-slate-300 leading-relaxed">{row.sm}</td>
+                  <td className="p-4 text-sapphire-200 leading-relaxed">{row.rte}</td>
+                  <td className="p-4 text-sky-200 font-medium bg-sky-500/5 border-x border-sky-500/10 leading-relaxed">{row.ste}</td>
                 </tr>
               ))}
             </tbody>

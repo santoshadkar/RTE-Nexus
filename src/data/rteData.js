@@ -73,11 +73,78 @@ export const RTE_ROLES_DATA = {
     { id: "risk-roam", title: "Risk & Dependency ROAMer", icon: "ShieldAlert", color: "from-amber-500 to-orange-600", description: "Facilitates the identification, resolution, and escalation of dependencies using the ROAM framework.", keyAction: "Protects ART commitments by actively neutralizing impediments." }
   ],
   roleComparison: [
-    { aspect: "Scope of Leadership", sm: "Single Agile Team (5-9 people)", rte: "Agile Release Train (50–125+ people, 5–12 teams)", ste: "Solution Train (500+ people, multiple ARTs)" },
-    { aspect: "Primary Events Facilitated", sm: "Iteration Planning, Standup, Retro", rte: "PI Planning, SoS, ART Sync, System Demo, I&A", ste: "Pre/Post Solution PI, Solution Sync, Solution Demo" },
-    { aspect: "Key Stakeholders", sm: "Team Members, Product Owner", rte: "PM, System Arch, Business Owners, SMs, LACE", ste: "Enterprise VPs, Solution Arch, Portfolio Leads" },
-    { aspect: "Primary Focus", sm: "Team delivery speed & iteration goals", rte: "Cross-team dependencies, ART flow, PI Objectives", ste: "Multi-train alignment, enterprise architecture" },
-    { aspect: "Metrics Tracked", sm: "Team Velocity, Burndown", rte: "ART Predictability Index, Flow Velocity, ROAM Risks", ste: "Solution Flow, Enterprise Milestones" }
+    { 
+      aspect: "Scope of Leadership & Scale", 
+      sm: "Single Agile Team (5–9 people, developers, testers)", 
+      rte: "Agile Release Train (50–125+ people, 5–12 cross-functional teams)", 
+      ste: "Solution Train (500–2,000+ people, 3–10+ ARTs, shared services & third-party suppliers)" 
+    },
+    { 
+      aspect: "Primary Triad Partners", 
+      sm: "Product Owner (PO) & Team Technical Lead", 
+      rte: "Product Management (PM) & System Architect/Engineering", 
+      ste: "Solution Management & Solution Architect/Engineering" 
+    },
+    { 
+      aspect: "Work Item Level Governed", 
+      sm: "User Stories & Technical Tasks / Bugs", 
+      rte: "Features & Architectural Enablers (WSJF prioritized)", 
+      ste: "Solution Capabilities & Large Solution Enablers (WSJF prioritized)" 
+    },
+    { 
+      aspect: "Primary Cadence Events", 
+      sm: "Daily Standup, Iteration Planning, Team Backlog Refinement, Iteration Review, Team Retro", 
+      rte: "Pre-PI Planning, 2-Day PI Planning, Scrum of Scrums (SoS), ART Sync, System Demo, Inspect & Adapt (I&A)", 
+      ste: "Pre-PI Solution Sync, Post-PI Planning, Solution Sync, Solution Architecture Sync, Solution Demo, Solution I&A" 
+    },
+    { 
+      aspect: "Planning & Delivery Time Horizon", 
+      sm: "2-Week Iteration (Micro flow & sprint commitments)", 
+      rte: "10-Week Program Increment (Quarterly ART flow)", 
+      ste: "Multi-PI Horizon / 6–12 Month Solution Roadmap" 
+    },
+    { 
+      aspect: "Key Stakeholders & Governance", 
+      sm: "Team Members, Product Owner, local functional manager", 
+      rte: "Business Owners (BOs), PM, System Arch, Scrum Masters, LACE, Portfolio Leads", 
+      ste: "Enterprise Executives, C-Suite, Solution Arch, Government Regulators, Third-Party Supplier Leads" 
+    },
+    { 
+      aspect: "Impediment & Risk Removal Scope", 
+      sm: "Intra-team blockers, local tooling issues, sprint scope disputes", 
+      rte: "Cross-team dependencies, train capacity imbalances, ART-level ROAM risks, environment bottlenecks", 
+      ste: "Cross-ART deadlocks, supplier hardware delivery failures, regulatory non-compliance, enterprise budget freezes" 
+    },
+    { 
+      aspect: "Primary Flow & Performance Metrics", 
+      sm: "Team Velocity, Sprint Burndown, Cumulative Flow (CFD)", 
+      rte: "ART Predictability Index (80–100%), Flow Efficiency %, Defect Leakage, Work Item Age (WIA), DORA Metrics", 
+      ste: "Solution Predictability Index (SPI), Capability Lead Time, Multi-Train Flow Load, Supplier Milestone Compliance" 
+    },
+    { 
+      aspect: "Architectural & Technical Runway", 
+      sm: "Code cleanliness, unit test coverage, component refactoring", 
+      rte: "Microservice API decoupling score, CI/CD pipeline automation, Enabler capacity allocation (70/20/10)", 
+      ste: "Fixed vs Variable Solution Intent, cyber-physical hardware/firmware emulation, multi-system interface contracts" 
+    },
+    { 
+      aspect: "Coaching & Culture Impact", 
+      sm: "Coaches individual developers & PO in Agile mindsets and psychological safety", 
+      rte: "Coaches Scrum Masters, Product Managers, and Business Owners in Lean-Agile servant leadership", 
+      ste: "Coaches RTEs, enterprise architects, and executive leadership in Large Solution systems thinking" 
+    },
+    { 
+      aspect: "Typical Career Transition Feeder", 
+      sm: "Software Engineer, QA Tester, Business Analyst, Project Coordinator", 
+      rte: "Senior Scrum Master, Agile Coach, Project Manager (PMP), Engineering Manager", 
+      ste: "Senior Release Train Engineer (RTE), Enterprise Program Director (PgMP), Chief Systems Architect" 
+    },
+    { 
+      aspect: "Primary Target Certification", 
+      sm: "SAFe 6.0 Scrum Master (SSM) / A-CSM", 
+      rte: "SAFe 6.0 Release Train Engineer (RTE) / SPC", 
+      ste: "SAFe 6.0 Solution Train Engineer (STE) Mastery / SPC 6.0 / PgMP" 
+    }
   ]
 };
 
