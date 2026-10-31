@@ -67,10 +67,74 @@ export const RTE_ROLES_DATA = {
     }
   ],
   corePillars: [
-    { id: "servant-leader", title: "Servant Leader & Coach", icon: "HeartHandshake", color: "from-blue-600 to-indigo-700", description: "Leads by serving the train, fostering psychological safety, empowering Scrum Masters, and coaching Lean-Agile mindsets.", keyAction: "Empowers teams to self-organize while removing systemic impediments." },
-    { id: "value-stream", title: "Value Stream Navigator", icon: "TrendingUp", color: "from-sky-500 to-blue-600", description: "Facilitates Program Increment Execution, tracks SAFe Flow Metrics (Velocity, Efficiency, Predictability), and removes bottlenecks.", keyAction: "Ensures relentless delivery of customer value across the ART." },
-    { id: "pi-facilitator", title: "Chief Event Facilitator", icon: "Calendar", color: "from-emerald-600 to-teal-700", description: "Orchestrates key ART events including Pre-PI, PI Planning, SoS, ART Sync, System Demos, and Inspect & Adapt (I&A).", keyAction: "Ensures seamless alignment between PM, System Arch, and teams." },
-    { id: "risk-roam", title: "Risk & Dependency ROAMer", icon: "ShieldAlert", color: "from-amber-500 to-orange-600", description: "Facilitates the identification, resolution, and escalation of dependencies using the ROAM framework.", keyAction: "Protects ART commitments by actively neutralizing impediments." }
+    { 
+      id: "servant-leader", 
+      title: "1. Servant Leader & Agile Coach of the Train", 
+      icon: "HeartHandshake", 
+      color: "from-blue-600 to-indigo-700", 
+      tagline: "Culture, Empathy & Psychological Safety",
+      description: "Operates as the Chief Scrum Master, fostering psychological safety, modeling Lean-Agile values, and mentoring Scrum Masters across 5–12 teams without administrative hierarchy.", 
+      keyAction: "Empowers teams to self-organize while removing systemic impediments.",
+      responsibilities: [
+        "Mentors Scrum Masters on active listening, team conflict resolution, and flow diagnostics.",
+        "Cultivates radical candor and transparent impediment reporting without fear of blame.",
+        "Shields teams from executive micromanagement, rogue scope injections, and dark work.",
+        "Facilitates Lean-Agile Center of Excellence (LACE) training and Community of Practice (CoP) sessions."
+      ],
+      keyArtifacts: ["Team Working Agreements", "ART Social Contract", "Scrum Master Capability Matrix"],
+      governanceKPI: "Employee Net Promoter Score (eNPS) & Psychological Safety Index (> 85%)"
+    },
+    { 
+      id: "value-stream", 
+      title: "2. Value Stream Navigator & Flow Telemetry Engine", 
+      icon: "TrendingUp", 
+      color: "from-sky-500 to-blue-600", 
+      tagline: "Speed, Throughput & Flow Governance",
+      description: "Directs the continuous flow of Features and Enablers through the ART Kanban. Leverages SAFe 6.0 Flow Metrics and DORA telemetry to systematically expose wait queues and bottlenecks.", 
+      keyAction: "Maximizes business value delivery by shortening customer lead time.",
+      responsibilities: [
+        "Enforces Work-in-Process (WIP) limits on team boards to prevent developer context switching.",
+        "Calculates ART Flow Efficiency % (active working time vs idle wait queue states).",
+        "Tracks DORA telemetry: Deployment Frequency (DF) and Mean Time to Restore (MTTR).",
+        "Partners with System Architects to enforce a 70/20/10 capacity allocation for features, enablers, and debt."
+      ],
+      keyArtifacts: ["Cumulative Flow Diagrams (CFD)", "ART Flow Telemetry Dashboard", "Work Item Age (WIA) Alerts"],
+      governanceKPI: "Flow Efficiency >= 35% & Defect Leakage Rate to Production < 4%"
+    },
+    { 
+      id: "pi-facilitator", 
+      title: "3. Chief Event Facilitator & Cadence Maestro", 
+      icon: "Calendar", 
+      color: "from-emerald-600 to-teal-700", 
+      tagline: "Rhythm, Alignment & High-Stakes Events",
+      description: "Orchestrates the entire heartbeat of the ART: Pre-PI readiness, the 2-day PI Planning mega-event, twice-weekly Scrum of Scrums (SoS), bi-weekly System Demos, and Inspect & Adapt (I&A) workshops.", 
+      keyAction: "Ensures seamless alignment between Business Owners, Product Management, System Arch, and delivery teams.",
+      responsibilities: [
+        "Verifies Pre-PI backlog readiness (Top 10 Features refined with WSJF) 6 weeks in advance.",
+        "Facilitates Day 1 & Day 2 PI Planning breakouts, managing energy, timeboxes, and room logistics.",
+        "Runs the bi-weekly integrated System Demo on live staging software with Business Owners.",
+        "Directs the 5-Whys Problem Solving workshop at Inspect & Adapt to generate actionable IP enablers."
+      ],
+      keyArtifacts: ["PI Planning Agenda & Run-of-Show", "Scrum of Scrums (SoS) Blocker Log", "System Demo Scorecard"],
+      governanceKPI: "PI Planning Confidence Vote Average >= 3.5 & On-Time Event Execution Rate"
+    },
+    { 
+      id: "risk-roam", 
+      title: "4. Risk & Dependency ROAMer & Escalation Master", 
+      icon: "ShieldAlert", 
+      color: "from-amber-500 to-orange-600", 
+      tagline: "Impediment Neutralization & Contractual Commitments",
+      description: "Proactively identifies, tracks, and eliminates cross-team and cross-ART critical path dependencies. Employs the ROAM framework during PI Day 2 to ensure zero unowned risks exit planning.", 
+      keyAction: "Protects ART commitments by neutralizing blockers before they impact customer milestones.",
+      responsibilities: [
+        "Visualizes dependency string networks on the Program Board to identify schedule collisions.",
+        "Enforces the ROAM framework: ensures every Owned risk has a named human owner and SLA deadline.",
+        "Secures formal executive sign-offs and written commercial impact statements for all Accepted risks.",
+        "Escalates unresolved cross-train blockers to the Solution Train Engineer (STE) within 24 hours."
+      ],
+      keyArtifacts: ["Enterprise ROAM Board", "Visual Program Board with Dependency Strings", "RAID Log Register"],
+      governanceKPI: "ART Predictability Index (80% – 100%) & 100% ROAM Risk Assignment Rate"
+    }
   ],
   roleComparison: [
     { 

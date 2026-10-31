@@ -95,11 +95,14 @@ export default function RteOverviewLanding({ onNavigateTab }) {
       {/* CORE RTE RESPONSIBILITIES GRID */}
       <div className="space-y-6">
         <div className="border-b border-slate-800 pb-3">
-          <h2 className="text-2xl font-heading font-bold text-white flex items-center space-x-2">
-            <Award className="w-6 h-6 text-sapphire-400" />
-            <span>4 Core Responsibilities of an RTE</span>
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sapphire-500/10 border border-sapphire-500/30 text-sapphire-300 text-xs font-semibold mb-2">
+            <Award className="w-3.5 h-3.5 text-sapphire-400" />
+            <span>SAFe 6.0 Core Role Architecture</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-heading font-extrabold text-white flex items-center space-x-2">
+            <span>The 4 Core Responsibilities of a Release Train Engineer</span>
           </h2>
-          <p className="text-xs text-slate-400">The essential operational pillars that define the RTE role.</p>
+          <p className="text-xs text-slate-400">Exhaustive operational breakdown covering day-to-day duties, key governance artifacts, and quantitative success KPIs.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -108,25 +111,58 @@ export default function RteOverviewLanding({ onNavigateTab }) {
             return (
               <div 
                 key={pillar.id}
-                className="glass-panel p-6 rounded-3xl border border-slate-800 glass-panel-hover flex flex-col justify-between space-y-4"
+                className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 glass-panel-hover flex flex-col justify-between space-y-5 bg-navy-900/90"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${pillar.color} flex items-center justify-center text-white shadow-lg`}>
-                      <Icon className="w-6 h-6" />
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${pillar.color} flex items-center justify-center text-white shadow-lg shrink-0`}>
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold tracking-wider uppercase text-sapphire-400 block">{pillar.tagline}</span>
+                        <h3 className="text-lg font-heading font-bold text-white">{pillar.title}</h3>
+                      </div>
                     </div>
-                    <span className="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-navy-950 border border-slate-800 text-slate-400">
-                      Core Duty
-                    </span>
                   </div>
 
-                  <h3 className="text-lg font-heading font-bold text-white">{pillar.title}</h3>
                   <p className="text-slate-300 text-xs leading-relaxed">{pillar.description}</p>
+
+                  {/* Day-to-Day Responsibilities List */}
+                  <div className="space-y-2 pt-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-200 block">Core Operational Duties:</span>
+                    <ul className="space-y-1.5 text-xs text-slate-300">
+                      {pillar.responsibilities.map((resp, rIdx) => (
+                        <li key={rIdx} className="flex items-start space-x-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                          <span className="leading-snug">{resp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Artifacts Produced */}
+                  <div className="p-3 rounded-xl bg-navy-950 border border-slate-800 text-[11px] space-y-1">
+                    <span className="text-slate-400 block">Key Governance Artifacts:</span>
+                    <div className="flex flex-wrap gap-1.5 pt-0.5">
+                      {pillar.keyArtifacts.map((art, aIdx) => (
+                        <span key={aIdx} className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]">
+                          {art}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-navy-950 border border-slate-800 text-xs text-sapphire-300 flex items-start space-x-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Primary Impact:</strong> {pillar.keyAction}</span>
+                <div className="space-y-2 pt-2 border-t border-slate-800/80">
+                  <div className="p-3 rounded-2xl bg-navy-950 border border-slate-800 text-xs text-sapphire-300 flex items-start space-x-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span><strong>Primary Impact:</strong> {pillar.keyAction}</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/20 text-[11px] text-emerald-300 font-mono">
+                    <strong>Success Metric:</strong> {pillar.governanceKPI}
+                  </div>
                 </div>
               </div>
             );

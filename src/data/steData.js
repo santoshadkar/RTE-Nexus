@@ -72,10 +72,74 @@ export const STE_ROLES_DATA = {
     }
   ],
   corePillars: [
-    { id: "ste-servant-leader", title: "Enterprise Servant Coach", icon: "HeartHandshake", color: "from-sky-600 to-indigo-800", description: "Fosters servant leadership across RTEs and enterprise stakeholders, breaking down political silos and cultivating cross-train psychological safety.", keyAction: "Empowers RTEs and value streams to collaborate without hierarchical bureaucracy." },
-    { id: "ste-solution-navigator", title: "Large Solution Flow Navigator", icon: "TrendingUp", color: "from-blue-600 to-cyan-700", description: "Steers multi-ART capabilities through the Solution Kanban, monitoring cross-train Flow Velocity, Flow Efficiency, and Lead Time.", keyAction: "Accelerates integrated time-to-market for massive systems." },
-    { id: "ste-pre-post-facilitator", title: "Pre- & Post-PI Orchestrator", icon: "Calendar", color: "from-indigo-600 to-violet-800", description: "Directs Pre-PI Planning, Post-PI Planning, Solution Syncs, and integrated Solution Demos across all participating trains.", keyAction: "Synchronizes 500+ engineers into a unified delivery cadence." },
-    { id: "ste-enterprise-roam", title: "Multi-ART Dependency & ROAM Master", icon: "ShieldAlert", color: "from-rose-600 to-amber-700", description: "Visualizes and neutralizes enterprise critical-path dependencies, supplier integration blocks, and regulatory risks.", keyAction: "Protects enterprise solution milestones from systemic derailment." }
+    { 
+      id: "ste-servant-leader", 
+      title: "1. Enterprise Servant Coach & Multi-Train Cultural Anchor", 
+      icon: "HeartHandshake", 
+      color: "from-sky-600 to-indigo-800", 
+      tagline: "Coach of Coaches across Value Streams",
+      description: "Serves as the lead coach and facilitator across all constituent Release Train Engineers (RTEs), Product Managers, and Solution Architects. Fosters cross-train psychological safety and dissolves political and organizational silos across mega-trains.", 
+      keyAction: "Empowers RTEs and value streams to collaborate without hierarchical friction.",
+      responsibilities: [
+        "Facilitates the bi-weekly Solution Sync with all RTEs, aligning cross-train cadence and impediments.",
+        "Mentors practicing RTEs on large-scale facilitation techniques and executive negotiation.",
+        "Maintains alignment between Lean Portfolio Management (LPM) and engineering execution teams.",
+        "Dissolves departmental rivalries between software, hardware, compliance, and firmware teams."
+      ],
+      keyArtifacts: ["Multi-ART Communication Charter", "Solution Train Working Agreements", "RTE Mentorship Network"],
+      governanceKPI: "RTE Retention Rate (> 90%) & Cross-Train Alignment Health Score"
+    },
+    { 
+      id: "ste-solution-navigator", 
+      title: "2. Large Solution Flow Navigator & Capability Velocity Engine", 
+      icon: "TrendingUp", 
+      color: "from-blue-600 to-cyan-700", 
+      tagline: "End-to-End Enterprise Throughput Governance",
+      description: "Directs the flow of multi-million dollar Solution Capabilities through the Solution Kanban. Evaluates systemic queue wait times, cross-ART staging contention, and multi-train velocity balance.", 
+      keyAction: "Accelerates integrated time-to-market for complex cyber-physical systems.",
+      responsibilities: [
+        "Monitors the Solution Kanban from portfolio approval through analysis, backlog, and integrated delivery.",
+        "Calculates aggregated Solution Flow Load to ensure constituent ARTs are not starved or saturated.",
+        "Tracks end-to-end Capability Lead Time from inception to integrated validation at the Solution Demo.",
+        "Identifies shared service bottlenecks (e.g. specialized hardware testing laboratories, shared cloud clusters)."
+      ],
+      keyArtifacts: ["Solution Kanban Board", "Multi-Train Cumulative Flow Diagram (CFD)", "Enterprise Value Stream Map"],
+      governanceKPI: "Capability Lead Time < 45 Days & Multi-Train Flow Predictability > 85%"
+    },
+    { 
+      id: "ste-pre-post-facilitator", 
+      title: "3. Pre- & Post-PI Orchestrator & Enterprise Event Maestro", 
+      icon: "Calendar", 
+      color: "from-indigo-600 to-violet-800", 
+      tagline: "Mega-Cadence Synchronization & Post-PI Commitment",
+      description: "Architects and orchestrates the critical Pre-PI Planning and Post-PI Planning events that sandwich individual ART planning sessions. Brings together 500 to 2,000+ practitioners into unified strategic alignment.", 
+      keyAction: "Synchronizes hundreds of engineers and external vendors into a unified delivery cadence.",
+      responsibilities: [
+        "Orchestrates Pre-PI Planning with Business Owners, Solution Management, and all ART triads 2–4 weeks prior to PI.",
+        "Reconciles inter-train dependency conflicts and capacity mismatches during Post-PI Planning Day.",
+        "Facilitates the enterprise-wide Solution Demo showcasing live, end-to-end cyber-physical software capabilities.",
+        "Leads the multi-train Solution Inspect & Adapt (I&A) workshop including systemic root-cause problem solving."
+      ],
+      keyArtifacts: ["Pre- & Post-PI Run of Show", "Solution Objectives Roster", "Solution Demo Script & Scorecard"],
+      governanceKPI: "Solution Fist-of-Five Confidence Average >= 3.5 & Post-PI Commitment Sign-off Rate"
+    },
+    { 
+      id: "ste-enterprise-roam", 
+      title: "4. Multi-ART Dependency & Enterprise ROAM Master", 
+      icon: "ShieldAlert", 
+      color: "from-rose-600 to-amber-700", 
+      tagline: "Systemic Impediment Elimination & Regulatory Shield",
+      description: "Operates at the enterprise critical path level, governing cross-ART dependency strings, third-party supplier milestone risks, Fixed/Variable Solution Intent, and governmental regulatory compliance audits.", 
+      keyAction: "Protects enterprise solution milestones from critical path failure.",
+      responsibilities: [
+        "Visualizes multi-train critical paths across constituent ART Program Boards on the Solution Dependency Board.",
+        "Governs supplier integration cadences, preventing hardware shipping delays from blocking software velocity.",
+        "Escalates enterprise ROAM risks to C-level Business Owners and Portfolio Management within 48 hours.",
+        "Maintains traceability between Solution Intent specifications and automated compliance verification evidence."
+      ],
+      keyArtifacts: ["Multi-ART Solution Dependency Board", "Enterprise ROAM Risk Register", "Supplier SLA Scorecard"],
+      governanceKPI: "Solution Predictability Index (SPI 80% – 100%) & Zero Unowned Cross-ART Critical Blockers"
+    }
   ],
   roleComparison: [
     { 
