@@ -14,7 +14,12 @@ import {
   HeartHandshake,
   Network,
   Truck,
-  FileCheck
+  FileCheck,
+  Scale,
+  Cpu,
+  AlertTriangle,
+  GitBranch,
+  Workflow
 } from 'lucide-react';
 
 export default function SteOverviewLanding({ onNavigateTab }) {
@@ -81,6 +86,13 @@ export default function SteOverviewLanding({ onNavigateTab }) {
               <Layers className="w-4 h-4" />
               <span>Multi-ART Tools & Templates</span>
             </button>
+            <button 
+              onClick={() => onNavigateTab('ste-career-hub')}
+              className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-md flex items-center space-x-2 transition-all transform hover:scale-105"
+            >
+              <Award className="w-4 h-4" />
+              <span>STE 360° Diagnostic & Certs</span>
+            </button>
           </div>
         </div>
       </div>
@@ -124,6 +136,106 @@ export default function SteOverviewLanding({ onNavigateTab }) {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* NEW DEEP-DIVE: FIXED VS VARIABLE SOLUTION INTENT IN ACTION */}
+      <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+        <div className="border-b border-slate-800 pb-3">
+          <span className="text-xs font-bold text-sky-400 uppercase tracking-wider block">Large Solution Engineering</span>
+          <h2 className="text-xl font-heading font-bold text-white flex items-center space-x-2">
+            <Scale className="w-5 h-5 text-sky-400" />
+            <span>Mastering Fixed vs Variable Solution Intent</span>
+          </h2>
+          <p className="text-xs text-slate-400">How the STE and Solution Architect keep massive systems compliant while enabling continuous Agile experimentation.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-2xl bg-navy-950 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-sky-400 uppercase">Fixed Solution Intent (The Non-Negotiables)</span>
+              <span className="text-[9px] px-2 py-0.5 rounded bg-sky-950/40 text-sky-300 border border-sky-500/30">Mandatory</span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Requirements, laws, regulatory guardrails, and mechanical/physical interfaces that <strong>must be obeyed</strong> without deviation.
+            </p>
+            <ul className="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-slate-800/80">
+              <li className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                <span>Government safety standards (e.g., ISO 26262, FAA DO-178C, HIPAA, GDPR).</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                <span>Physical hardware form factors, power consumption limits, and weight limits.</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                <span>Core cross-platform cryptographic standards and security protocols.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-navy-950 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-emerald-400 uppercase">Variable Solution Intent (The Innovation Space)</span>
+              <span className="text-[9px] px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-300 border border-emerald-500/30">Agile Flow</span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Functional behavior, user experiences, and algorithms that remain flexible and evolve as learning occurs across iterations.
+            </p>
+            <ul className="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-slate-800/80">
+              <li className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Machine learning algorithm tuning, heuristics, and predictive models.</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>User experience flows, screen navigation, and dashboard telemetry presentation.</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Internal microservice communication protocols and caching architectures.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* NEW DEEP-DIVE: STE MULTI-SUPPLIER GOVERNANCE BLUEPRINT */}
+      <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+        <div className="border-b border-slate-800 pb-3">
+          <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block">Vendor Alignment</span>
+          <h2 className="text-xl font-heading font-bold text-white flex items-center space-x-2">
+            <Truck className="w-5 h-5 text-amber-400" />
+            <span>The STE Multi-Supplier Integration Playbook</span>
+          </h2>
+          <p className="text-xs text-slate-400">How to integrate traditional third-party vendors and hardware suppliers into an Agile Solution Train cadence.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="p-5 rounded-2xl bg-navy-950 border border-slate-800 space-y-2">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Tactic 1</span>
+            <h3 className="text-sm font-bold text-white">Cadence Synchronization</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Never accept vendors delivering in a single monolithic handoff at month 11. Contractually mandate that suppliers participate in <strong>Pre-PI Planning</strong> and deliver testable releases at each 10-week PI milestone.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-navy-950 border border-slate-800 space-y-2">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">Tactic 2</span>
+            <h3 className="text-sm font-bold text-white">Hardware/Firmware Emulation</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              When physical chips or mechanical hardware have 6-month lead times, commission the System Team to build <strong>software simulators and mock harnesses</strong>. Internal software trains build against mocks so physical delivery never blocks velocity.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-navy-950 border border-slate-800 space-y-2">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Tactic 3</span>
+            <h3 className="text-sm font-bold text-white">Continuous Compliance Evidence</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Embed regulatory compliance officers directly into the <strong>Solution Demo</strong>. Automatically generate automated test execution evidence at every iteration rather than writing 500-page manual compliance binders at the end.
+            </p>
+          </div>
         </div>
       </div>
 
