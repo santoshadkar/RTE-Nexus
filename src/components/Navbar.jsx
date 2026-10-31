@@ -17,14 +17,20 @@ import {
   Menu,
   X,
   Layers,
-  Network
+  Network,
+  Calculator,
+  AlertTriangle,
+  Share2,
+  Terminal,
+  ShieldAlert,
+  Zap
 } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('leadership');
 
-  // Categories with Solution Train Engineer (STE) Suite included
+  // Categories including the 5 New Field Utilities
   const categories = [
     {
       id: 'leadership',
@@ -42,13 +48,26 @@ export default function Navbar({ activeTab, setActiveTab }) {
       id: 'ste-suite',
       label: 'STE Large Solution Suite',
       icon: Network,
-      badge: 'NEW',
+      badge: 'STE',
       items: [
         { id: 'ste-overview', label: 'STE Definition & Launch', icon: Network },
         { id: 'ste-pillars', label: '6 Large Solution Pillars', icon: Layers },
         { id: 'ste-day-in-life', label: 'Pre/Post-PI Playbook', icon: Clock },
         { id: 'ste-tools', label: 'Multi-ART ROAM & Tools', icon: Wrench },
         { id: 'ste-career-hub', label: 'STE Career & Certs', icon: Award },
+      ]
+    },
+    {
+      id: 'utilities',
+      label: 'Field Utilities',
+      icon: Zap,
+      badge: 'NEW',
+      items: [
+        { id: 'wsjf-calculator', label: 'WSJF Calculator', icon: Calculator },
+        { id: 'confidence-vote', label: 'Confidence Vote Engine', icon: AlertTriangle },
+        { id: 'program-board', label: 'Program Board Visualizer', icon: Share2 },
+        { id: 'tough-spot', label: 'Tough Spot Playbook', icon: ShieldAlert },
+        { id: 'alm-cheatsheet', label: 'ALM JQL/WIQL Cheatsheet', icon: Terminal },
       ]
     },
     {
@@ -67,9 +86,9 @@ export default function Navbar({ activeTab, setActiveTab }) {
       label: 'Workshops & Tools',
       icon: Wrench,
       items: [
+        { id: 'power-tools', label: 'Interactive Tools & RAID', icon: Wrench },
         { id: 'workshop-studio', label: 'ART & Team Canvas', icon: Layout },
         { id: 'alm-tools', label: 'ALM Stack & Dashboards', icon: Settings },
-        { id: 'power-tools', label: 'Interactive Tools & RAID', icon: Wrench },
       ]
     },
     {
@@ -123,7 +142,7 @@ export default function Navbar({ activeTab, setActiveTab }) {
           </div>
 
           {/* Level 1 Category Pills */}
-          <nav className="hidden lg:flex items-center space-x-1.5 bg-navy-950 p-1.5 rounded-2xl border border-slate-800">
+          <nav className="hidden xl:flex items-center space-x-1.5 bg-navy-950 p-1.5 rounded-2xl border border-slate-800">
             {categories.map((cat) => {
               const Icon = cat.icon;
               const isActive = (selectedCategory === cat.id) || currentCategory.id === cat.id;
@@ -151,7 +170,7 @@ export default function Navbar({ activeTab, setActiveTab }) {
           </nav>
 
           {/* Mobile Menu Toggle */}
-          <div className="flex lg:hidden">
+          <div className="flex xl:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl bg-navy-950 text-slate-300 border border-slate-800"
@@ -164,7 +183,7 @@ export default function Navbar({ activeTab, setActiveTab }) {
       </div>
 
       {/* LEVEL 2: Sub-Navigation Bar */}
-      <div className="hidden lg:block bg-navy-950/60 border-t border-slate-800/30">
+      <div className="hidden xl:block bg-navy-950/60 border-t border-slate-800/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
           <div className="flex items-center space-x-2 overflow-x-auto scrollbar-none py-0.5">
             {currentCategory.items.map((item) => {
@@ -192,7 +211,7 @@ export default function Navbar({ activeTab, setActiveTab }) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-800 bg-navy-950 px-4 pt-3 pb-6 space-y-4">
+        <div className="xl:hidden border-t border-slate-800 bg-navy-950 px-4 pt-3 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
           {categories.map((cat) => (
             <div key={cat.id} className="space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-3">

@@ -22,6 +22,13 @@ import SteDayInTheLife from './components/SteDayInTheLife';
 import SteInteractiveTools from './components/SteInteractiveTools';
 import SteCareerHub from './components/SteCareerHub';
 
+// 5 New Operational Utilities Components
+import WsjfCalculator from './components/WsjfCalculator';
+import ConfidenceVoteEngine from './components/ConfidenceVoteEngine';
+import ProgramBoardVisualizer from './components/ProgramBoardVisualizer';
+import ToughSpotPlaybook from './components/ToughSpotPlaybook';
+import AlmQueryCheatsheet from './components/AlmQueryCheatsheet';
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('foundations');
 
@@ -84,6 +91,27 @@ export default function App() {
           <SteCareerHub />
         )}
 
+        {/* 5 NEW OPERATIONAL FIELD UTILITIES */}
+        {activeTab === 'wsjf-calculator' && (
+          <WsjfCalculator />
+        )}
+
+        {activeTab === 'confidence-vote' && (
+          <ConfidenceVoteEngine />
+        )}
+
+        {activeTab === 'program-board' && (
+          <ProgramBoardVisualizer />
+        )}
+
+        {activeTab === 'tough-spot' && (
+          <ToughSpotPlaybook />
+        )}
+
+        {activeTab === 'alm-cheatsheet' && (
+          <AlmQueryCheatsheet />
+        )}
+
         {/* EXECUTION & CADENCE */}
         {activeTab === 'day-in-life' && (
           <DayInTheLife />
@@ -102,16 +130,16 @@ export default function App() {
         )}
 
         {/* WORKSHOPS & TOOLS */}
+        {activeTab === 'power-tools' && (
+          <InteractiveTools />
+        )}
+
         {activeTab === 'workshop-studio' && (
           <WorkshopStudio />
         )}
 
         {activeTab === 'alm-tools' && (
           <AlmToolsGuide />
-        )}
-
-        {activeTab === 'power-tools' && (
-          <InteractiveTools />
         )}
 
         {/* AI CO-PILOT SUITE (RTE + STE COMBINED) */}

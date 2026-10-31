@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, ExternalLink, Network, Layers } from 'lucide-react';
+import { Sparkles, ExternalLink, Network, Layers, Zap } from 'lucide-react';
 
 export default function Footer({ setActiveTab }) {
   return (
@@ -45,14 +45,18 @@ export default function Footer({ setActiveTab }) {
           </ul>
         </div>
 
-        {/* Col 4 */}
+        {/* Col 4: 5 Field Utilities */}
         <div>
-          <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">Tools & Cadence</h4>
+          <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-4 flex items-center space-x-1">
+            <Zap className="w-3.5 h-3.5" />
+            <span>Field Utilities</span>
+          </h4>
           <ul className="space-y-2 text-xs">
-            <li><button onClick={() => setActiveTab('power-tools')} className="hover:text-emerald-400 transition-colors">Interactive Tools & RAID</button></li>
-            <li><button onClick={() => setActiveTab('reporting-engine')} className="hover:text-emerald-400 transition-colors">Cadence Reporting Engine</button></li>
-            <li><button onClick={() => setActiveTab('workshop-studio')} className="hover:text-emerald-400 transition-colors">ART Canvas Studio</button></li>
-            <li><button onClick={() => setActiveTab('ai-copilot')} className="hover:text-emerald-400 transition-colors">AI Prompts & Simulator</button></li>
+            <li><button onClick={() => setActiveTab('wsjf-calculator')} className="hover:text-emerald-400 transition-colors">WSJF Priority Calculator</button></li>
+            <li><button onClick={() => setActiveTab('confidence-vote')} className="hover:text-emerald-400 transition-colors">Confidence Vote Engine</button></li>
+            <li><button onClick={() => setActiveTab('program-board')} className="hover:text-emerald-400 transition-colors">Visual Program Board</button></li>
+            <li><button onClick={() => setActiveTab('tough-spot')} className="hover:text-emerald-400 transition-colors">Tough Spot Crisis Playbook</button></li>
+            <li><button onClick={() => setActiveTab('alm-cheatsheet')} className="hover:text-emerald-400 transition-colors">ALM JQL/WIQL Cheatsheet</button></li>
           </ul>
         </div>
 
@@ -64,12 +68,12 @@ export default function Footer({ setActiveTab }) {
               <span>RTE & STE Official Spec</span>
               <ExternalLink className="w-3 h-3" />
             </a>
-            <a href="https://scaledagileframework.com/large-solution-safe/" target="_blank" rel="noreferrer" className="flex items-center space-x-1 hover:text-sky-400">
-              <span>Large Solution SAFe Guide</span>
+            <a href="https://scaledagileframework.com/wsjf/" target="_blank" rel="noreferrer" className="flex items-center space-x-1 hover:text-sky-400">
+              <span>WSJF Official Model</span>
               <ExternalLink className="w-3 h-3" />
             </a>
-            <a href="https://scaledagileframework.com/pre-and-post-pi-planning/" target="_blank" rel="noreferrer" className="flex items-center space-x-1 hover:text-sky-400">
-              <span>Pre/Post-PI Planning</span>
+            <a href="https://scaledagileframework.com/pi-planning/" target="_blank" rel="noreferrer" className="flex items-center space-x-1 hover:text-sky-400">
+              <span>PI Planning Governance</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
@@ -80,7 +84,7 @@ export default function Footer({ setActiveTab }) {
       <div className="max-w-7xl mx-auto border-t border-slate-800/60 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
         <p>© 2026 RTE & STE Nexus. Enterprise Command Center for Scaled Agile Practitioners Worldwide.</p>
         <p className="flex items-center space-x-1 mt-2 sm:mt-0">
-          <span>Engineered for SAFe 6.0 Large Solutions & ARTs</span>
+          <span>Engineered for SAFe 6.0 Large Solutions & Agile Release Trains</span>
         </p>
       </div>
     </footer>
