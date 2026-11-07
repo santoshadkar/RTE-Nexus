@@ -21,7 +21,7 @@ import {
   Network
 } from 'lucide-react';
 
-export default function SteCareerHub() {
+export default function SteCareerHub({ onNavigateTab }) {
   const [activeTab, setActiveTab] = useState('assessment'); // 'assessment' | 'eligibility' | 'certifications' | 'roadmap'
 
   // STE SELF ASSESSMENT STATE
@@ -87,6 +87,15 @@ export default function SteCareerHub() {
               </button>
             );
           })}
+          {onNavigateTab && (
+            <button
+              onClick={() => onNavigateTab('interview-vault')}
+              className="flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-300 hover:text-white border border-purple-500/40 hover:border-purple-400 sm:ml-auto"
+            >
+              <HelpCircle className="w-4 h-4 text-purple-400" />
+              <span>170+ Interview Vault →</span>
+            </button>
+          )}
         </div>
       </div>
 

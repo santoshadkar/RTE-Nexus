@@ -19,7 +19,7 @@ import {
   Star
 } from 'lucide-react';
 
-export default function RteCareerHub() {
+export default function RteCareerHub({ onNavigateTab }) {
   const [activeTab, setActiveTab] = useState('assessment'); // 'assessment' | 'eligibility' | 'certifications' | 'roadmap'
 
   // SELF ASSESSMENT DIAGNOSTIC STATE
@@ -179,6 +179,15 @@ export default function RteCareerHub() {
             <TrendingUp className="w-4 h-4" />
             <span>5-Year Career Roadmap</span>
           </button>
+          {onNavigateTab && (
+            <button
+              onClick={() => onNavigateTab('interview-vault')}
+              className="px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 to-indigo-500/20 text-amber-300 hover:text-white border border-amber-500/40 hover:border-amber-400 sm:ml-auto"
+            >
+              <HelpCircle className="w-4 h-4 text-amber-400" />
+              <span>170+ Interview Vault →</span>
+            </button>
+          )}
         </div>
       </div>
 

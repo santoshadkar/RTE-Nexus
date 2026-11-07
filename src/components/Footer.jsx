@@ -27,6 +27,7 @@ export default function Footer({ setActiveTab }) {
             <li><button onClick={() => setActiveTab('servant-leadership')} className="hover:text-sapphire-400 transition-colors">Servant Leadership & Fresh ART</button></li>
             <li><button onClick={() => setActiveTab('rte-career-hub')} className="hover:text-sapphire-400 transition-colors">RTE 360° Diagnostic & Certs</button></li>
             <li><button onClick={() => setActiveTab('day-in-life')} className="hover:text-sapphire-400 transition-colors">Day in the Life Playbook</button></li>
+            <li><button onClick={() => setActiveTab('interview-vault')} className="text-amber-400 font-bold hover:text-amber-300 transition-colors">🎯 Interview Vault (170+ Q&As)</button></li>
           </ul>
         </div>
 

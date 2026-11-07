@@ -29,6 +29,9 @@ import ProgramBoardVisualizer from './components/ProgramBoardVisualizer';
 import ToughSpotPlaybook from './components/ToughSpotPlaybook';
 import AlmQueryCheatsheet from './components/AlmQueryCheatsheet';
 
+// Master Interview Vault (170+ Q&A)
+import InterviewMasterStudio from './components/InterviewMasterStudio';
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('foundations');
 
@@ -59,7 +62,7 @@ export default function App() {
         )}
 
         {activeTab === 'rte-career-hub' && (
-          <RteCareerHub />
+          <RteCareerHub onNavigateTab={setActiveTab} />
         )}
 
         {activeTab === 'art-dynamics' && (
@@ -88,7 +91,12 @@ export default function App() {
         )}
 
         {activeTab === 'ste-career-hub' && (
-          <SteCareerHub />
+          <SteCareerHub onNavigateTab={setActiveTab} />
+        )}
+
+        {/* INTERVIEW MASTER VAULT (170+ Q&A) */}
+        {activeTab === 'interview-vault' && (
+          <InterviewMasterStudio />
         )}
 
         {/* 5 NEW OPERATIONAL FIELD UTILITIES */}

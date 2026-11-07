@@ -23,7 +23,8 @@ import {
   Share2,
   Terminal,
   ShieldAlert,
-  Zap
+  Zap,
+  HelpCircle
 } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab }) {
@@ -55,6 +56,15 @@ export default function Navbar({ activeTab, setActiveTab }) {
         { id: 'ste-day-in-life', label: 'Pre/Post-PI Playbook', icon: Clock },
         { id: 'ste-tools', label: 'Multi-ART ROAM & Tools', icon: Wrench },
         { id: 'ste-career-hub', label: 'STE Career & Certs', icon: Award },
+      ]
+    },
+    {
+      id: 'interview-vault',
+      label: 'Interview Vault',
+      icon: HelpCircle,
+      badge: '170 Q&A',
+      items: [
+        { id: 'interview-vault', label: '170+ Master Q&A Studio', icon: HelpCircle },
       ]
     },
     {
